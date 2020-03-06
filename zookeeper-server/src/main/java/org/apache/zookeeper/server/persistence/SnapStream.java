@@ -64,6 +64,7 @@ public class SnapStream {
     public enum StreamMode {
         GZIP("gz"),
         SNAPPY("snappy"),
+        LZ4("lz4"),
         CHECKED("");
 
         public static final StreamMode DEFAULT_MODE = CHECKED;
@@ -109,6 +110,9 @@ public class SnapStream {
         case SNAPPY:
             is = new SnappyInputStream(fis);
             break;
+        case LZ4:
+            is = null;
+            break;
         case CHECKED:
         default:
             is = new BufferedInputStream(fis);
@@ -133,6 +137,9 @@ public class SnapStream {
             break;
         case SNAPPY:
             os = new SnappyOutputStream(fos);
+            break;
+        case LZ4:
+            os = null;
             break;
         case CHECKED:
         default:
@@ -190,6 +197,9 @@ public class SnapStream {
             break;
         case SNAPPY:
             isValid = isValidSnappyStream(file);
+            break;
+        case LZ4:
+            isValid = false;
             break;
         case CHECKED:
         default:
